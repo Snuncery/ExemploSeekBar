@@ -1,8 +1,10 @@
 package com.example.exemploseekbar;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -17,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar seekBar;
     private TextView textViewValor;
     private View bgView;
+    private Button buttonEnviar;
+    private int valor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +31,15 @@ public class MainActivity extends AppCompatActivity {
         seekBar = findViewById(R.id.seekBarVolume);
         textViewValor = findViewById(R.id.textSeekBar);
         bgView = findViewById(R.id.main);
+        buttonEnviar = findViewById(R.id.btnEnviar);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 textViewValor.setText("Volume: " + progress);
+                //inserindo o valor progress em uma variável
+                valor = progress;
+                //alterando o plano de fundo de acordo com o valor de volume
                 if (progress > 70) {
                     bgView.setBackgroundColor(Color.GREEN);
                     textViewValor.setTextColor(Color.BLACK);
@@ -52,6 +60,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+            }
+        });
+
+        buttonEnviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //chamando a segunda activity
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                //enviando a variável para a segunda tela
+                intent.putExtra("VALOR", valor);
+                startActivity(intent);
             }
         });
     }
